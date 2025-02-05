@@ -1,0 +1,25 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+body {
+  background: linear-gradient(
+    to bottom right,
+    #c31432,
+    #8e0000,
+    #240b36
+  );  background: -webkit-linear-gradient(
+    to bottom right,
+    #c31432,
+    #8e0000,
+    #240b36
+  );
+  background: linear-gradient(
+    to bottom right,
+    #c31432,
+    #8e0000,
+    #240b36
+  );
+}
