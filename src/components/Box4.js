@@ -14,9 +14,9 @@ function Box4() {
 
   // أرقام الواتساب الثلاثة
   const whatsappNumbers = [
-    '01508833552',
-    '01508833122',
-    '01551013615',
+    '+201508833552',
+    '+201508833122',
+    '+201551013615',
   ];
 
   const handleOpenBox4SubModal = () => setShowBox4SubModal(true);
