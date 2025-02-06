@@ -238,7 +238,7 @@ function Box2() {
         }}
       >
         {/* نعرض صورة واحدة فقط "static1.png" */}
-        {renderStaticImageWithInstructions('static/static1.GIF')}
+        {renderStaticImageWithInstructions('static/static1.gif')}
 
         {/* إذا أردت استخدام المودال للفيديو/الملف، احتفظ بهذا المودال */}
         <Modal
