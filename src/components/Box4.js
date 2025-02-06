@@ -229,7 +229,7 @@ function Box4() {
         }}
       >
         {/* نعرض صورة ثابتة واحدة فقط (بدلاً من صورتين) */}
-        {renderStaticImageWithInstructions('static/static3.GIF')}
+        {renderStaticImageWithInstructions('static/static3.gif')}
 
         {/* مودال الفيديو/الملف (إذا احتجته مستقبلاً) */}
         <Modal show={showBox4SubModal} onHide={handleCloseBox4SubModal} centered size="md">
