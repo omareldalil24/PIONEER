@@ -206,7 +206,7 @@ function Box3() {
           textAlign: 'center',
         }}
       >
-        {renderStaticImageWithInstructions('static/static2.GIF')}
+        {renderStaticImageWithInstructions('static/static2.gif')}
 
         {/* احتفظ بهذا المودال إن احتجته لفيديو/ملف مستقبلًا */}
         <Modal show={showBox3SubModal} onHide={handleCloseBox3SubModal} centered size="md">
