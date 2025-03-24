@@ -52,7 +52,9 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
         navigate('/first-year');
       } else if (userCode >= 2001 && userCode <= 3000) {
         navigate('/second-year');
-      } else if (userCode >= 3001 && userCode <= 5000) {
+      } else if (userCode >= 3001 && userCode <= 4000) {
+        navigate('/third-year');
+      } else if (userCode >= 4001 && userCode <= 5000) {
         navigate('/third-year');
       } else {
         setError('الكود الخاص بك غير موجود ضمن السنوات المحددة!');
