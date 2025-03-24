@@ -9,6 +9,7 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [debug, setDebug] = useState(''); // للتشخيص فقط
 
   const navigate = useNavigate();
 
@@ -39,26 +40,44 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
       return;
     }
 
+    // للتشخيص: طباعة بيانات المستخدم المدخلة
+    console.log("Username entered:", username);
+    console.log("Password entered:", password);
+    
     const foundUser = usersData.find(
       (user) => user.username === username && user.password === password
     );
-
+    
     if (foundUser) {
+      console.log("User found:", foundUser);
       setCurrentUser(foundUser);
       localStorage.setItem('currentUser', JSON.stringify(foundUser));
 
       const userCode = getUserCode(foundUser.username);
-      if (userCode >= 1001 && userCode <= 2000) {
-        navigate('/first-year');
-      } else if (userCode >= 2001 && userCode <= 3000) {
-        navigate('/second-year');
-      } else if (userCode >= 3001 && userCode <= 5000) {
-        navigate('/third-year');
+      console.log("Extracted user code:", userCode);
+      
+      // تحسين المنطق للتوجيه بناءً على الكود
+      if (userCode) {
+        if (userCode >= 1001 && userCode <= 2000) {
+          navigate('/first-year');
+        } else if (userCode >= 2001 && userCode <= 3000) {
+          navigate('/second-year');
+        } else if (userCode >= 3001 && userCode <= 5000) {
+          navigate('/third-year');
+        } else {
+          setError(`الكود الخاص بك (${userCode}) غير موجود ضمن السنوات المحددة!`);
+        }
       } else {
-        setError('الكود الخاص بك غير موجود ضمن السنوات المحددة!');
+        setError('لم يتم العثور على كود مستخدم صالح في اسم المستخدم!');
       }
     } else {
-      setError('اسم المستخدم أو كلمة المرور غير صحيحة!');
+      // للتشخيص: التحقق ما إذا كان المستخدم موجودًا بغض النظر عن كلمة المرور
+      const userExists = usersData.find(user => user.username === username);
+      if (userExists) {
+        setError('كلمة المرور غير صحيحة!');
+      } else {
+        setError('اسم المستخدم غير موجود!');
+      }
     }
   };
 
@@ -105,6 +124,7 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
 
               {/* تم إزالة عنوان "تسجيل الدخول" */}
               {error && <div className="alert alert-danger">{error}</div>}
+              {debug && <div className="alert alert-info">{debug}</div>}
 
               <Form onSubmit={handleLogin}>
                 <Form.Group className="mb-3" controlId="username">
