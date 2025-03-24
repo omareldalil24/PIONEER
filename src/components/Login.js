@@ -1,120 +1,69 @@
-// Login.js - FIXED VERSION
+// Login.js
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Container, Row, Col, Form, Button, Card } from 'react-bootstrap';
 
-import logo from '../assets/aa.png';
+import logo from '../assets/aa.png'; // تأكد من صحة مسار الصورة
 
 function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }) {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
   // استخراج رقم المستخدم من الـ username
   const getUserCode = (uname) => {
-    // نبحث عن أرقام في اسم المستخدم
     const match = uname.match(/\d+/);
-    if (match) {
-      // تحويل إلى رقم
-      const code = parseInt(match[0], 10);
-      console.log(`Username: ${uname}, Extracted code: ${code}`);
-      return code;
-    }
-    console.log(`No code found in username: ${uname}`);
-    return null;
+    return match ? parseInt(match[0], 10) : null;
   };
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
-    setError('');
 
-    try {
-      // حالة الأدمن
-      if (
-        username === 'rabea$#@@admin.dashboard' &&
-        password === 'admin$#@galaldashboard'
-      ) {
-        const adminUser = { username, isAdmin: true };
-        setCurrentUser(adminUser);
-        localStorage.setItem('currentUser', JSON.stringify(adminUser));
-        navigate('/admin-dashboard');
-        return;
-      }
+    // حالة الأدمن
+    if (
+      username === 'rabea$#@@admin.dashboard' &&
+      password === 'admin$#@galaldashboard'
+    ) {
+      const adminUser = { username, isAdmin: true };
+      setCurrentUser(adminUser);
+      localStorage.setItem('currentUser', JSON.stringify(adminUser));
+      navigate('/admin-dashboard');
+      return;
+    }
 
-      // إذا لم يكن أدمن => ابحث في usersData
-      if (!usersData || usersData.length === 0) {
-        console.log("No users data loaded");
-        setError('لم يتم تحميل بيانات المستخدمين بعد. حاول مجددًا.');
-        setIsLoading(false);
-        return;
-      }
+    // إذا لم يكن أدمن => ابحث في usersData
+    if (!usersData || usersData.length === 0) {
+      setError('لم يتم تحميل بيانات المستخدمين بعد. حاول مجددًا.');
+      return;
+    }
 
-      console.log(`Attempting login for user: ${username}`);
-      console.log(`Total users in database: ${usersData.length}`);
+    const foundUser = usersData.find(
+      (user) => user.username === username && user.password === password
+    );
 
-      // البحث عن المستخدم
-      const foundUser = usersData.find(
-        (user) => user.username === username && user.password === password
-      );
+    if (foundUser) {
+      setCurrentUser(foundUser);
+      localStorage.setItem('currentUser', JSON.stringify(foundUser));
 
-      if (foundUser) {
-        console.log(`User authenticated: ${foundUser.username}`);
-        setCurrentUser(foundUser);
-        localStorage.setItem('currentUser', JSON.stringify(foundUser));
-
-        // استخراج الكود من اسم المستخدم
-        const userCode = getUserCode(foundUser.username);
-        
-        if (!userCode) {
-          console.log("No valid code found in username");
-          setError('لم يتم العثور على كود صالح في اسم المستخدم!');
-          setIsLoading(false);
-          return;
-        }
-
-        // توجيه المستخدم بناءً على الكود
-        console.log(`Redirecting user with code ${userCode}`);
-        
-        if (userCode >= 1001 && userCode <= 2000) {
-          console.log("Redirecting to first year");
-          navigate('/first-year');
-        } else if (userCode >= 2001 && userCode <= 3000) {
-          console.log("Redirecting to second year");
-          navigate('/second-year');
-        } else if (userCode >= 3001 && userCode <= 5000) {
-          // تأكيد أن هذا الشرط يشمل الكود 4001 إلى 5000
-          console.log(`Redirecting to third year with code ${userCode}`);
-          navigate('/third-year');
-        } else {
-          console.log(`Code ${userCode} doesn't match any year range`);
-          setError(`الكود الخاص بك (${userCode}) غير موجود ضمن السنوات المحددة!`);
-        }
+      const userCode = getUserCode(foundUser.username);
+      if (userCode >= 1001 && userCode <= 2000) {
+        navigate('/first-year');
+      } else if (userCode >= 2001 && userCode <= 3000) {
+        navigate('/second-year');
+      } else if (userCode >= 3001 && userCode <= 5000) {
+        navigate('/third-year');
       } else {
-        // التحقق ما إذا كان المستخدم موجودًا لكن كلمة المرور خاطئة
-        const userExists = usersData.find(user => user.username === username);
-        if (userExists) {
-          console.log("Username exists but password is incorrect");
-          setError('كلمة المرور غير صحيحة!');
-        } else {
-          console.log("Username not found in database");
-          setError('اسم المستخدم غير موجود!');
-        }
+        setError('الكود الخاص بك غير موجود ضمن السنوات المحددة!');
       }
-    } catch (err) {
-      console.error("Login error:", err);
-      setError('حدث خطأ أثناء تسجيل الدخول. حاول مرة أخرى.');
-    } finally {
-      setIsLoading(false);
+    } else {
+      setError('اسم المستخدم أو كلمة المرور غير صحيحة!');
     }
   };
 
   // جلب بيانات المستخدمين (مرة واحدة عند التحميل)
   useEffect(() => {
-    console.log("Fetching users data...");
     fetchUsersFromGitHub();
   }, [fetchUsersFromGitHub]);
 
@@ -128,6 +77,7 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
+        /* يمكنك وضع خلفية متدرجة هنا إن أردت */
       }}
     >
       <Row className="justify-content-center" style={{ width: '100%' }}>
@@ -137,13 +87,14 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
             style={{
               borderRadius: '20px',
               border: 'none',
-              background: 'rgba(255, 255, 255, 0.6)',
-              backdropFilter: 'blur(10px)',
-              boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+              background: 'rgba(255, 255, 255, 0.6)', // خلفية شفافة
+              backdropFilter: 'blur(10px)',            // تأثير الزجاج
+              boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)', // ظل ناعم
               color: '#333',
             }}
           >
             <Card.Body>
+              {/* اللوجو في الأعلى */}
               <div style={{ textAlign: 'center', marginBottom: '20px' }}>
                 <img
                   src={logo}
@@ -152,6 +103,7 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
                 />
               </div>
 
+              {/* تم إزالة عنوان "تسجيل الدخول" */}
               {error && <div className="alert alert-danger">{error}</div>}
 
               <Form onSubmit={handleLogin}>
@@ -182,14 +134,13 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
                 <Button
                   type="submit"
                   className="w-100"
-                  disabled={isLoading}
                   style={{
                     backgroundColor: '#000',
                     border: 'none',
                     fontWeight: 'bold',
                   }}
                 >
-                  {isLoading ? 'جاري تسجيل الدخول...' : 'دخول'}
+                  دخول
                 </Button>
               </Form>
             </Card.Body>
