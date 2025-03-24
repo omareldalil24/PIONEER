@@ -20,7 +20,7 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+  
     // حالة الأدمن
     if (
       username === 'rabea$#@@admin.dashboard' &&
@@ -32,27 +32,28 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
       navigate('/admin-dashboard');
       return;
     }
-
+  
     // إذا لم يكن أدمن => ابحث في usersData
     if (!usersData || usersData.length === 0) {
       setError('لم يتم تحميل بيانات المستخدمين بعد. حاول مجددًا.');
       return;
     }
-
+  
     const foundUser = usersData.find(
       (user) => user.username === username && user.password === password
     );
-
+  
     if (foundUser) {
       setCurrentUser(foundUser);
       localStorage.setItem('currentUser', JSON.stringify(foundUser));
-
+  
       const userCode = getUserCode(foundUser.username);
+  
       if (userCode >= 1001 && userCode <= 2000) {
         navigate('/first-year');
       } else if (userCode >= 2001 && userCode <= 3000) {
         navigate('/second-year');
-      } else if (userCode >= 3001 && userCode <= 5000) {
+      } else if ((userCode >= 3001 && userCode <= 4000) || (userCode >= 4001 && userCode <= 5000)) {
         navigate('/third-year');
       } else {
         setError('الكود الخاص بك غير موجود ضمن السنوات المحددة!');
@@ -61,7 +62,7 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
       setError('اسم المستخدم أو كلمة المرور غير صحيحة!');
     }
   };
-
+  
   // جلب بيانات المستخدمين (مرة واحدة عند التحميل)
   useEffect(() => {
     fetchUsersFromGitHub();
