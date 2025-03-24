@@ -87,7 +87,7 @@ function App() {
   const isThirdYear = () => {
     if (!currentUser || currentUser.isAdmin) return false;
     const code = getUserCode(currentUser.username);
-    return code >= 3001 && code <= 4000;
+    return code >= 3001 && code <= 5000;
   };
 
   // مكوّن حماية للسنوات (للطلاب)
