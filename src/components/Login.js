@@ -9,6 +9,7 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const navigate = useNavigate();
 
@@ -16,6 +17,25 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
   const getUserCode = (uname) => {
     const match = uname.match(/\d+/);
     return match ? parseInt(match[0], 10) : null;
+  };
+
+  // دالة لتوجيه المستخدم إلى الصفحة المناسبة
+  const redirectUserToCorrectPage = (user) => {
+    if (user.isAdmin) {
+      navigate('/admin-dashboard');
+      return;
+    }
+
+    const userCode = getUserCode(user.username);
+    if (userCode >= 1001 && userCode <= 2000) {
+      navigate('/first-year');
+    } else if (userCode >= 2001 && userCode <= 3000) {
+      navigate('/second-year');
+    } else if ((userCode >= 3001 && userCode <= 4000) || (userCode >= 4001 && userCode <= 5000)) {
+      navigate('/third-year');
+    } else {
+      setError('الكود الخاص بك غير موجود ضمن السنوات المحددة!');
+    }
   };
 
   const handleLogin = async (e) => {
@@ -45,28 +65,52 @@ function Login({ setCurrentUser, usersData, setUsersData, fetchUsersFromGitHub }
   
     if (foundUser) {
       setCurrentUser(foundUser);
+      // حفظ بيانات المستخدم في localStorage
       localStorage.setItem('currentUser', JSON.stringify(foundUser));
-  
-      const userCode = getUserCode(foundUser.username);
-  
-      if (userCode >= 1001 && userCode <= 2000) {
-        navigate('/first-year');
-      } else if (userCode >= 2001 && userCode <= 3000) {
-        navigate('/second-year');
-      } else if ((userCode >= 3001 && userCode <= 4000) || (userCode >= 4001 && userCode <= 5000)) {
-        navigate('/third-year');
-      } else {
-        setError('الكود الخاص بك غير موجود ضمن السنوات المحددة!');
-      }
+      // استخدام الدالة الجديدة للتوجيه
+      redirectUserToCorrectPage(foundUser);
     } else {
       setError('اسم المستخدم أو كلمة المرور غير صحيحة!');
     }
   };
-  
-  // جلب بيانات المستخدمين (مرة واحدة عند التحميل)
+
+  // التحقق من وجود مستخدم مسجل الدخول مسبقا وجلب بيانات المستخدمين
   useEffect(() => {
-    fetchUsersFromGitHub();
+    const checkLoggedInUser = async () => {
+      setIsLoading(true);
+      
+      // تحقق من وجود مستخدم مسجل في localStorage
+      const storedUser = localStorage.getItem('currentUser');
+      
+      if (storedUser) {
+        const user = JSON.parse(storedUser);
+        setCurrentUser(user);
+        
+        // إذا كان هناك مستخدم مخزن، قم بتوجيهه مباشرة
+        redirectUserToCorrectPage(user);
+      }
+      
+      setIsLoading(false);
+    };
+
+    // أولاً جلب بيانات المستخدمين
+    fetchUsersFromGitHub().then(() => {
+      // ثم تحقق من وجود مستخدم مسجل
+      checkLoggedInUser();
+    });
   }, [fetchUsersFromGitHub]);
+
+  // إذا كان التطبيق لا يزال يتحقق من وجود مستخدم مسجل
+  if (isLoading) {
+    return (
+      <Container className="text-center my-5">
+        <div className="spinner-border text-primary" role="status">
+          <span className="visually-hidden">جاري التحميل...</span>
+        </div>
+        <p className="mt-2">جاري التحقق من تسجيل الدخول...</p>
+      </Container>
+    );
+  }
 
   return (
     <Container
