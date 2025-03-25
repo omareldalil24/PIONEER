@@ -46,14 +46,25 @@ function App() {
   const [loadingUser, setLoadingUser] = useState(true);
   const [usersData, setUsersData] = useState([]);
 
-  // قراءة currentUser من LocalStorage
-  useEffect(() => {
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-      setCurrentUser(JSON.parse(savedUser));
-    }
-    setLoadingUser(false);
-  }, []);
+  // دالة لاستخراج كود المستخدم من الـ username
+  const getUserCode = (username) => {
+    const match = username?.match(/\d+/);
+    return match ? parseInt(match[0], 10) : null;
+  };
+
+  // دالة لتحديد المسار الصحيح بناءً على الكود
+  const getRedirectPathForUser = (user) => {
+    if (!user) return '/login';
+    
+    if (user.isAdmin) return '/admin-dashboard';
+    
+    const code = getUserCode(user.username);
+    if (code >= 1001 && code <= 2000) return '/first-year';
+    if (code >= 2001 && code <= 3000) return '/second-year';
+    if ((code >= 3001 && code <= 4000) || (code >= 4001 && code <= 5000)) return '/third-year';
+    
+    return '/login';
+  };
 
   // جلب بيانات المستخدمين
   const fetchUsersFromGitHub = useCallback(async () => {
@@ -67,11 +78,17 @@ function App() {
     }
   }, []);
 
-  // دالة لاستخراج كود المستخدم من الـ username
-  const getUserCode = (username) => {
-    const match = username?.match(/\d+/);
-    return match ? parseInt(match[0], 10) : null;
-  };
+  // قراءة currentUser من LocalStorage
+  useEffect(() => {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+      setCurrentUser(JSON.parse(savedUser));
+    }
+    setLoadingUser(false);
+    
+    // تحميل بيانات المستخدمين
+    fetchUsersFromGitHub();
+  }, [fetchUsersFromGitHub]);
 
   // التحقق من أي سنة ينتمي إليها المستخدم
   const isFirstYear = () => {
@@ -87,13 +104,13 @@ function App() {
   const isThirdYear = () => {
     if (!currentUser || currentUser.isAdmin) return false;
     const code = getUserCode(currentUser.username);
-    return code >= 3001 && code <= 5000;
+    return (code >= 3001 && code <= 4000) || (code >= 4001 && code <= 5000);
   };
 
   // مكوّن حماية للسنوات (للطلاب)
   function ProtectedRoute({ children, allowedCheck }) {
     if (loadingUser) {
-      return null; // أو يمكن إرجاع شاشة تحميل
+      return <div className="text-center p-5">جاري التحميل...</div>;
     }
     if (!currentUser || !allowedCheck()) {
       return <Navigate to="/login" replace />;
@@ -104,7 +121,7 @@ function App() {
   // مكوّن حماية للأدمن
   function AdminProtectedRoute({ children }) {
     if (loadingUser) {
-      return null;
+      return <div className="text-center p-5">جاري التحميل...</div>;
     }
     if (!currentUser || !currentUser.isAdmin) {
       return <Navigate to="/login" replace />;
@@ -114,14 +131,26 @@ function App() {
 
   return (
     <Router>
-      {/* إخفاء النافبار في صفحات معينة */}
-      {(window.location.pathname !== '/login' && window.location.pathname !== '/starting') && (
+      {/* إخفاء النافبار في صفحة تسجيل الدخول فقط */}
+      {window.location.pathname !== '/login' && (
         <NavbarCustom currentUser={currentUser} setCurrentUser={setCurrentUser} />
       )}
 
       <Routes>
-        <Route path="/" element={<Starting />} />
+        {/* الصفحة الرئيسية تفحص حالة المستخدم */}
+        <Route path="/" element={
+          loadingUser ? (
+            <div className="text-center p-5">جاري التحميل...</div>
+          ) : currentUser ? (
+            <Navigate to={getRedirectPathForUser(currentUser)} replace />
+          ) : (
+            <Navigate to="/starting" replace />
+          )
+        } />
+        
+        {/* صفحة البداية - نعرضها للمستخدمين غير المسجلين */}
         <Route path="/starting" element={<Starting />} />
+        
         <Route
           path="/login"
           element={
@@ -277,9 +306,7 @@ function App() {
           }
         />
 
-        {/* =============================
-            مسارات صفحات الأدمن للصفوف
-            ============================= */}
+        {/* مسارات صفحات الأدمن للصفوف */}
         <Route
           path="/admin-first-year"
           element={
