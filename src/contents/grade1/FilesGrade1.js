@@ -46,7 +46,7 @@ function FilesGrade1() {
     >
       <Container style={{ direction: 'rtl', color: '#fff', paddingTop: '40px' }}>
         <h2 className="mb-4" style={{ textAlign: 'center' }}>
-          ملفات الصف الأول الثانوي
+          ملفات الصف الثالث الثانوي
         </h2>
 
         <Row className="gy-4 justify-content-center">
