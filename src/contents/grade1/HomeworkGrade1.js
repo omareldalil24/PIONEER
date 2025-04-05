@@ -46,7 +46,7 @@ function HomeworkGrade1() {
     >
       <Container style={{ direction: 'rtl', color: '#fff', paddingTop: '40px' }}>
         <h2 className="mb-4" style={{ textAlign: 'center' }}>
-          واجبات الصف الأول الثانوي
+          واجبات الصف الثالث الثانوي
         </h2>
 
         <Row className="gy-4 justify-content-center">
