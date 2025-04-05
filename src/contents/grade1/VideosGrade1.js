@@ -46,7 +46,7 @@ function VideosGrade1() {
     >
       <Container style={{ direction: 'rtl', color: '#fff', paddingTop: '40px' }}>
         <h2 className="mb-4" style={{ textAlign: 'center' }}>
-          فيديوهات الصف الأول الثانوي
+          فيديوهات الصف الثالث الثانوي
         </h2>
 
         {/* عرض الفيديوهات كـ Cards */}
