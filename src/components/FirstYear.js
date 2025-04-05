@@ -19,7 +19,7 @@ function FirstYear() {
     <>
       <Container style={{ direction: 'rtl', textAlign: 'right', color: '#fff' }} className="my-4">
         <h2 className="mb-4" style={{ textAlign: 'center', marginTop: '60px', fontWeight: 'bold' }}>
-          الصف الأول الثانوي
+          الصف الثالث الثانوي
         </h2>
 
         <Row className="gy-4 justify-content-center">
