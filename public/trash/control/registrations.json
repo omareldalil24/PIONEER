@@ -13,8 +13,15 @@
       "paymentReceiptFileName": "receipt_1750546902138.jpg",
       "paymentReceiptType": "image/jpeg",
       "submissionDate": "2025-06-21T23:01:42.216Z",
-      "status": "pending"
+      "status": "approved",
+      "approvalDate": "2025-06-21T23:06:50.975Z"
     }
   ],
-  "approvedStudents": []
+  "approvedStudents": [
+    {
+      "id": 1750546902138,
+      "name": "يبسييب سبيسب",
+      "approvalDate": "2025-06-21T23:06:50.975Z"
+    }
+  ]
 }
