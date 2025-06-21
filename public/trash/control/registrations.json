@@ -14,14 +14,14 @@
       "paymentReceiptType": "image/jpeg",
       "submissionDate": "2025-06-21T23:01:42.216Z",
       "status": "approved",
-      "approvalDate": "2025-06-21T23:09:36.770Z"
+      "approvalDate": "2025-06-21T23:09:53.600Z"
     }
   ],
   "approvedStudents": [
     {
       "id": 1750546902138,
       "name": "يبسييب سبيسب",
-      "approvalDate": "2025-06-21T23:09:36.770Z"
+      "approvalDate": "2025-06-21T23:09:53.600Z"
     }
   ]
 }
