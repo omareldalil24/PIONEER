@@ -1,4 +1,11 @@
 {
-  "registrations": [],
+  "registrations": [
+    {
+      "id": 1750546784818,
+      "studentName": "اختبار Token جديد",
+      "status": "test",
+      "submissionDate": "2025-06-21T22:59:44.818Z"
+    }
+  ],
   "approvedStudents": []
 }
