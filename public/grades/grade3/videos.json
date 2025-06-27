@@ -28,5 +28,11 @@
     "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/ifrule.png",
     "notes": "قاعدة if",
     "isLive": false
+  },
+  {
+    "id": "1096824918",
+    "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/ifreplace.png",
+    "notes": "بدائل if",
+    "isLive": false
   }
 ]
