@@ -52,5 +52,11 @@
     "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/live1.png",
     "notes": "🔴البث المباشر الأول",
     "isLive": false
+  },
+  {
+    "id": "1097036587",
+    "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/writingskills.png",
+    "notes": "Writing Skills",
+    "isLive": false
   }
 ]
