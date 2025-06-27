@@ -46,5 +46,11 @@
     "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/aanthe.png",
     "notes": "A + An +The",
     "isLive": false
+  },
+  {
+    "id": "1096843023",
+    "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/live1.png",
+    "notes": "🔴البث المباشر الأول",
+    "isLive": false
   }
 ]
