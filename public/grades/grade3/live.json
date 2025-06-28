@@ -1,6 +1,6 @@
 {
-  "isActive": true,
-  "streamUrl": "https://www.youtube.com/live/V42X9C_cPHE?si=mvQsk9OXDlUod_Oi",
+  "isActive": false,
+  "streamUrl": "",
   "streamType": "youtube",
   "streamOwner": "omareldalil060@gmail.com"
 }
