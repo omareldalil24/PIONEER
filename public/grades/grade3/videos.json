@@ -58,5 +58,11 @@
     "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/writingskills.png",
     "notes": "Writing Skills",
     "isLive": false
+  },
+  {
+    "id": "1097221462",
+    "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/live03.png",
+    "notes": "لايف الحصة",
+    "isLive": false
   }
 ]
