@@ -70,5 +70,11 @@
     "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/live01.png",
     "notes": "لايف المراجعة part1",
     "isLive": false
+  },
+  {
+    "id": "1097212006",
+    "thumbnail": "https://raw.githubusercontent.com/omareldalil24/PIONEER/main/public/grades/grade3/live02.png",
+    "notes": "لايف المراجعة part2",
+    "isLive": false
   }
 ]
